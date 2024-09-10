@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="https://dhrumil.ca/assets/image/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="../style.css" rel="stylesheet">
+    <!-- Meta -->
+    
+    <!-- Cache Control -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+
+    <!-- Primary Meta Tags -->
+    <title>Lilian Hollard</title>
+    <meta name="title" content="Dhrumil Patel" />
+    <meta name="description" content="Data, Dogs, and Minimalism" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://dhrumil.ca/" />
+    <meta property="og:title" content="Dhrumil Patel" />
+    <meta property="og:description" content="Data, Dogs, and Minimalism" />
+    <meta property="og:image" content="https://dhrumil.ca/assets/image/og-light.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://dhrumil.ca/" />
+    <meta property="twitter:title" content="Dhrumil Patel" />
+    <meta property="twitter:description" content="Data, Dogs, and Minimalism" />
+    <meta property="twitter:image" content="https://dhrumil.ca/assets/image/og-light.png" />
+
+    <title>Home</title>
+</head>
+<body><div class="wrap">
+    <div class="home-icon-circle">
+    </div>
+    <div class="typewriter">
+        <h1>Chapitre 1</h1>
+    </div>
+    <p class="section"></p>
+    
+    <a href="../index.html">Retour page d'accueil</a>
+  
+    <p class="section">Pytorch - Etude sur CIFAR</p>
+    <p class="section">Introduction - CIFAR10</p>
+    <p><a href="https://www.cs.toronto.edu/~kriz/cifar.html">CIFAR</a> est un dataset facilement accessible via la librairie PyTorch, composé de 60 000 images, dont 50 000 pour l’entraînement et 10 000 pour la validation. Avec une taille de 32x32x3 pixels, CIFAR permet principalement aux chercheurs en vision par ordinateur de tester efficacement et (relativement) rapidement leurs expériences directement à l’aide de ce dataset.</p> <p>Dans ce premier chapitre, nous allons "apprendre" – j'espère que vous en êtes capables – à charger le dataset CIFAR10 depuis PyTorch.</p> <p>J'aimerais vous fournir une explication plus détaillée sur le choix de CIFAR10 pour ce cours, avec de belles justifications, mais la vraie raison, c'est probablement que c'est le seul dataset réputé que vous pourrez faire tourner sur vos machines personnelles...</p> 
+    <p class="section">Charger le dataset</p> 
+    <p><strong>À faire - Ex1 :</strong> Vous trouverez dans <i>torchvision</i> la documentation pour récupérer plusieurs datasets. Celui qui nous intéresse est... CIFAR ! Ok, vous suivez. L’objectif est de faire les <i>imports</i> nécessaires pour charger <i>torchvision</i>, puis d’instancier deux variables pour le jeu d’entraînement et de test. (Petit indice : c’est la même fonction, regardez bien les paramètres).</p> 
+    <p><i>PS : pour les plus attentifs, vous remarquerez que la fonction de chargement dans PyTorch demande une transformation. Vous pouvez mettre ce paramètre à "None" pour l’instant, nous y reviendrons plus tard.</i></p>
+    <p>Observons un peu ce dataset...</p> <p>À l’aide de <i>matplotlib</i>, affichez la première image du jeu d’entraînement de CIFAR.</p> <p>(Désolé, pas de notebook "à trou" ou de code à copier/coller – il faut optimiser ces 4 heures :D)</p>
+
+    <pre><code>
+    //TODO
+    import matplotlib.pyplot as plt
+    train_set = torchvision.definition // a faire :)
+    image = train_set... // a faire aussi
+      
+    plt.imshow(image)
+    </code></pre>
+  
+    <img src="../images/frogy.png" alt="first image of CIFAR training set from torchvision">
+  
+    <p>Vous devriez obtenir cette magnifique image de grenouille – necesitas más píxeles? – ou une autre si vous avez choisi un indice différent.</p>
+  
+    <p class="section">Comprendre le format d'une image</p>
+    <p>Ce ne devrait plus être un secret pour vous, mais les pixels sont affichés côte à côte sur un écran (au moins pour les écrans LCD, pour les autres technologies, je ne sais pas). Ce n'est pas vraiment une représentation pratique pour manipuler des images.</p>
+    <img src="../images/pixels.jpg" alt="pixeles">
+  
+    <p>En Deep Learning, nous utilisons principalement le concept de tenseurs.</p>
+    <p><strong>Tenseurs.</strong> Un tenseur est un concept mathématique qui généralise les notions de scalaire, vecteur et matrice.</p>
+    <p>Les matrices sont généralement représentées en 2 dimensions (hauteur, largeur, tout va bien jusque-là ?), tandis qu'un tenseur peut être représenté en <strong>n</strong> dimensions.</p>
+
+    <p>Pour représenter une image, nous avons besoin d’au moins 3 dimensions : largeur, hauteur, et profondeur - la profondeur permettant d’encoder les couleurs rouge, verte et bleue.</p>
+  
+  
+    <p>Voici une image tirée de l'excellent cours <a href="www.learnpytorch.io/">learnpytorch.io</a></p>
+    <img src="../images/00-tensor-shape-example-of-image.png" alt="visualisation d'un tensor">
+  
+    <p>En Deep Learning, nous allons encore plus loin en ajoutant une quatrième dimension, appelée le nombre de <strong>batches</strong> – un ensemble d'images stockées ensemble dans une même variable.</p>
+
+    <p>Ne vous inquiétez pas, il est difficile pour tout le monde d'imaginer des formes ou des variables avec plus de trois dimensions.</p>
+    <img src="../images/hinton.jpg" alt="ce bon vieux hinton">
+  
+    <p>La taille du <strong>batch</strong> permet principalement de traiter plusieurs données simultanément avant que le modèle ne mette à jour ses paramètres lors d'une étape d'entraînement. Cela est extrêmement utile pour éviter le surapprentissage (overfitting) – un entraînement parfait mais des performances très mauvaises en test – car le réseau de neurones s'entraîne sur un ensemble d'images variées plutôt que de traiter les images une par une (batch = 1).</p>
+    
+    
+    <p><strong>À faire - Ex2 :</strong> En convertissant explicitement l'image en un tenseur de type PyTorch lors de l'appel à <i>torchvision</i>, affichez à l'aide de <i>matplotlib</i> les 3 canaux de couleurs RGB.</p>
+  
+    <p>Un peu d'aide...</p>
+
+    <pre><code>
+    //torchvision.transforms.ToTensor()
+    
+    // -> Tensor dimensions : Channels, Height, Width
+    var tensor = load dataset with transforms=ToTensor()//
+    // tensor[0,...] = Red, ... 
+    // tensor[1,...] = Green, ... 
+    // tensor[2, ...]= Blue,...
+    </code></pre>
+    
+    <p class="section">Charger CIFAR10</p>
+    <p>Pour entraîner le modèle avec le jeu de données que nous avons manipulé précédemment, il est nécessaire d'indiquer à PyTorch comment récupérer les données, sous quel format, et les transformations que nous souhaitons appliquer au jeu de données.</p>
+
+    <p>Concernant les transformations, nous avons déjà réalisé cette étape en convertissant une image du format PIL en un tenseur PyTorch.</p>
+    <p>Cependant, vous pouvez aller plus loin en utilisant la bibliothèque <i>torchvision.transforms</i> pour modifier légèrement l'image, comme changer la couleur, inverser l'image, etc.</p>
+
+    <p>C'est ce qu'on appelle l'augmentation des données. Cela permet aux réseaux de neurones de disposer de beaucoup plus d'images pour l'entraînement et améliore la robustesse du modèle en le rendant capable de gérer des images légèrement imparfaites ou modifiées.</p>
+
+    <p>Pour charger un dataset dans un objet PyTorch, il suffit d'utiliser l'objet <i>DataLoader</i> avec les paramètres appropriés.</p>
+    <pre><code>
+    torch.utils.data.DataLoader(...)
+    </code></pre>
+    
+    <p><strong>À faire</strong> - Essayez de charger le jeu de données d'entraînement CIFAR10 dans un objet <i>DataLoader</i> (vous pouvez laisser la transformation <i>transforms.ToTensor()</i>).</p>
+
+    <p><strong>Récupérer les images</strong></p>
+
+    <p>Lorsque vous faites un appel à <i>train_loader</i> (ou un <i>print</i> si vous n'êtes pas dans un notebook), vous verrez que cela affiche seulement le type de l'objet.</p>
+
+    <p>Pour accéder aux valeurs au sein du <i>DataLoader</i>, vous devrez effectuer une <i>itération</i>.</p>
+
+    <p>Avec une simple boucle <i>for</i>, vous pouvez accéder directement à tous les éléments de votre objet.</p>
+
+    <p><i>Comment récupérer uniquement la première valeur ?</i></p>
+
+    <p><strong>À faire :</strong> Récupérez l'élément 0 de votre objet <code>DataLoader</code>.</p>
+
+    <p>Indice : <i>iter()</i> & <i>next()</i></p>
+
+    <p>Vous devriez obtenir un tableau avec 2 tenseurs : l'image en indice 0 et les labels en indice 1.</p>
+
+    <p>La taille dépendra du nombre de <i>batches</i> que vous avez spécifié au <i>DataLoader</i>. En effet, cet objet gère le regroupement des images et de leurs labels (y). Si vous avez spécifié <i>shuffle=True</i>, vous obtiendrez un mélange du dataset (whaou) !</p>
+    
+    <p class="section">Notre premier modèle</p>
+    
+    <p>Direction - <a href="https://pytorch.org/docs/stable/generated/torch.nn.Linear.html">Linear</a> !</p>
+    
+    <p>Élément fondamental du machine learning, permettant d'appliquer une transformation linéaire aux données d'entrée.</p>
+    <p><strong><i>Exercice en semi-autonomie</i></strong></p>
+    
+    <p><strong>Premier test - </strong> Créer un objet de type nn.Linear()</p>
+    <pre><code>
+    import torch
+    import torch.nn as nn 
+    
+    batch = next(iter(#votre_train_loader))
+    fc = nn.Linear(3*32*32,10)
+    </code></pre>
+  
+    <p>1. Lancez le fully-connected avec <i>batch[0]</i>.</p>
+    <p>    Pourquoi cela ne fonctionne-t-il pas ?</p>
+    <p>2. Proposez un code pour résoudre le problème - <U>quelqu'un devra passer au tableau</U> :^)</p>
+
+    <p>En résumé, une multiplication matricielle nécessite que les dimensions adjacentes soient de la même taille !</p>
+    
+   
+  
+    <img src="../images/eq1.png" alt="equation 1">
+    
+    <p>Pour <i>nn.Linear()</i>, la dimension adjacente est la dernière dimension de votre tenseur d'entrée.</p>
+
+    <p><strong>nn.Module</strong> Lorsque nous avons plusieurs objets permettant de créer des perceptrons multicouches ou des couches convolutives, par exemple, il n'est pas pratique de gérer plusieurs variables comme dans le code suivant :</p>
+    <pre><code>
+    a = nn.Linear(3, 32) #from 32 to 64
+    b = nn.Linear(32, 24) #from 64 back to 32.
+    
+    b(a(torch.randn(1,32*32,3)))
+    </code></pre>
+    
+    <p>Bien que valide, ce code ne permet pas de gérer efficacement des blocs de code plus complexes à grande échelle.</p>
+    <p>C'est là qu'intervient la classe <i>nn.Module</i> ! Nous pouvons créer une classe dérivée de <i>nn.Module</i> (l'heritage, ça vous dit quelque chose ? Ne vous inquiétez pas, son utilisation est très simple en PyTorch). Voici sa définition :</p>
+  
+    <pre><code>
+    class My_class(nn.Module):
+      def __init__(self):
+        super().__init__()
+        #definitions / constructors
+        self.a = nn.Linear(32,64)
+        self.b = nn.Linear(64,32)
+      def forward(self, x):
+        return self.b(self.a(x))
+    </code></pre>
+    
+    <p>Nous pouvons désormais créer un objet de type <i>My_class</i> pour faire passer une entrée <i>x</i> de dimension finale <i>3</i> à travers deux perceptrons multicouches.</p>
+  
+  <hr>
+  <p><strong>À faire :</strong></p>
+  <p>1. Faites en sorte que la dimension de la couche d'entrée ne soit pas fixée à 32.</p>
+  <p>2. Faites de même pour la couche "hidden".</p>
+  <p>3. Ajoutez un troisième <i>nn.Linear</i> pour que l'entrée <i>x</i> renvoie exactement le nombre de classes présentes dans CIFAR<strong>10</strong> (spoiler : il y a 10 classes ! :o )</p>
+
+  <hr>  
+  
+  <p class="section">Entrainer sur CIFAR10</p>
+  <p>Enfin ! Nous savons maintenant comment charger un dataset, le formater pour un objet PyTorch, et effectuer des traitements sur les tenseurs à l'aide d'un objet héritant de <y>nn.Module</y>.</p>
+
+  <p>De plus, notre premier modèle retourne un nombre de couches correspondant exactement au nombre de classes du dataset, mais... à quoi ça sert ?</p>
+
+  <p>Pour l'instant, pas grand-chose... Notre modèle effectue une transformation classique. Le nombre de neurones utilisé permet simplement d'adapter le nombre de sorties au nombre de classes. Mais c'est là que réside la magie ! Désormais, nous pouvons nous assurer que les tenseurs de <strong>n</strong> classes par <strong>batch</strong> produits par le modèle correspondent aux indices de labélisation du dataset.</p>
+  <hr>
+  <p><strong>CIFAR Class</strong></p>
+  <ul>
+    <p>Tensor [0.123, 0.289, <strong>3.222</strong>, -9.324, 0.11, 0.002, -0.227, 0.9, -3.0, 2.1]</p>
+  <li>0: Airplane</li>
+  <li>1: Automobile</li>
+  <li>2: Bird</li>
+    <li>...</li>
+  <li>9: Truck</li>
+  </ul>
+  <hr>
+    
+  <p>Pour l'instant, notre tenseur retourné contient des valeurs variant entre des nombres négatifs et positifs.</p>
+
+  <p>Nous devons transformer ce tenseur en une combinaison de probabilités allant de 0 à 1, <strong>dont la somme totale est égale à 1.</strong></p>
+
+  <p>Heureusement, il n'est pas nécessaire de coder cela à la main – bien que j'ai failli vous le demander ! – grâce à PyTorch, nous pouvons utiliser l'opération Softmax pour convertir notre ensemble de chiffres en probabilités.</p>
+  <img src="../images/softmax.png" alt=softmax>
+  
+  <p>La fonction peut sembler un peu "complexe" au premier abord, mais si nous décomposons le calcul pour la première valeur de notre précédent tenseur [], nous obtenons le calcul suivant :</p>
+  <math>exp(Tensor[0]) / exp(Tensor[0]) + exp(Tensor[1]) + ... + exp(Tensor[9])</math>
+  
+  <p>Nous répétons l'opération pour chaque valeur.</p>
+
+  <p>Pourquoi utiliser l'exponentiation ? L'exponentiation nous permet de calculer les probabilités relatives en fonction de la taille des valeurs comparées aux autres.</p>
+
+  <p>En PyTorch, il suffit d'appeler la fonction <i>softmax</i> pour effectuer ce calcul sur la dimension correspondant au nombre de classes. Cela permet notamment d'appliquer directement la fonction <i>softmax</i> à notre tenseur tout en conservant la dimension de <strong>batch</strong>. La définition est la suivante :</p>
+  <pre><code>
+  import torch.nn.functional as F
+  
+  probs = F.softmax(my_outputs, dim=1)
+  #la dimension == n_classes
+  </code></pre>
+  
+  <p>Maintenant que nous avons les probabilités pour chaque classe d'une image donnée (ici, pour chaque image du batch), nous devons récupérer la probabilité maximale pour chaque image. L'indice de la probabilité maximale sera alors attribué à l'indice correspondante. La fonction <i>torch.max()</i> permet de retourner la probabilité maximale ainsi que l'indice où elle se trouve.</p>
+
+  <pre><code>
+  maxProbs, index= torch.max(probs, dim=1)
+  </code></pre>
+  
+  <p>Parfait ! Pourquoi ne pas vérifier dès maintenant si tout fonctionne ?</p>
+
+  <hr>
+
+  <p><strong>À faire :</strong> Lancez le réseau de neurones sur la première image du <i>train_set</i> (normalement, cela a déjà été fait dans l'exercice précédent).</p>
+  <p>1. Récupérez les "labels" de la première image. (L'indice [0] correspond aux images du batch, tandis que l'indice [1] permet d'obtenir les labels correspondants.)</p>
+  <p>2. Nous voulons obtenir le total de réussites pour l'ensemble du batch ! Écrivez une fonction <i>accuracy</i> pour calculer le <strong>total</strong> des bonnes réponses.</p>
+  <p>Si les dimensions correspondent (ce qui devrait être le cas ici, sinon il y a un problème dans votre code !), Python permet une comparaison directe entre les labels et vos prédictions en utilisant l'opérateur <i>==</i>. Vous pouvez ensuite faire une somme des valeurs 1 pour les bonnes réponses et 0 pour les mauvaises, puis diviser par le nombre total de labels.</p>
+  
+  <hr>
+  
+  <p></p>
+  <p><strong>Cross-entropy</strong></p>
+
+  <p>Revenons un instant sur les probabilités générées par <i>softmax</i>. Nous obtenons un vecteur de réels permettant d'extraire l'indice du label correspondant, ce qui permet à notre réseau de neurones de "répondre" en proposant la classe qu'il estime la plus proche de ce qu'il observe. <strong>Malheureusement</strong>, cette information seule ne permet pas d'entraîner le réseau de neurones. Pour s'entraîner, un réseau doit, en fonction des probabilités qu'il retourne, s'auto-corriger en fonction de ses erreurs. Il est donc essentiel de lui indiquer <strong>à quel point il s'est trompé !</strong></p>
+
+  <p>Pour cela, PyTorch propose plusieurs fonctions. Celle qui nous intéresse est la <strong>fonction de coût cross-entropy catégorique</strong>.</p>
+
+  <p>La fonction de cross-entropy multiplie notre vecteur de probabilités par un vecteur encodé en 0 et 1, en fonction de la vérité des labels.</p>
+
+  <p>Par exemple, pour la classe 2 – la vérité des labels étant forcément 2, encodée par un 1 à l'indice correspondant :</p>
+
+  <p>[0, 0, 1, 0, 0, 0, 0, 0, 0, 0] x [0.123, 0.289, <strong>3.222</strong>, -9.324, 0.11, 0.002, -0.227, 0.9, -3.0, 2.1]</p>
+
+  <p>La fonction de cross-entropy effectuera une somme globale sur <strong>l'intégralité</strong> de la dimension <strong>batch</strong> pour fournir un retour global sur la performance de votre réseau de neurones.</p>
+
+  <p>PS : Pour le calcul précédent, on aurait pu simplifier en utilisant <i>-ln(3.222)</i>, étant donné que 0 multiplié par n'importe quel autre nombre donne 0 (whaou).</p>
+  
+  <pre><code>
+  import torch.nn.functional as F
+  lossFn = F.cross_entropy
+  
+  loss = lossFn(my_prob_outpus, labels)
+  tensor(2.35, grad_fn=NllLossBackward)
+  </code></pre>
+  
+  <p><strong>Descente de gradient</strong></p>
+  <p></p>
+  
+  <p>Ce chapitre touche bientôt à sa fin (enfin)... Nous avons déjà couvert une grande partie de PyTorch. Il ne reste plus qu'à assembler les différentes pièces pour que le modèle puisse assimiler correctement toutes ces informations.</p>
+
+  <p>La descente de gradient – dont les détails ne seront pas approfondis dans ce cours – permet de calculer la dérivée de chaque poids et biais sous la forme d'un gradient. Bien qu'un dataset de 60 000 images semble considérable pour ajuster chaque poids en fonction de toutes ces images, c'est pour cela que nous utilisons la fonction de coût (cross-entropy) sur l'ensemble des batches. Cela permet, à chaque itération d'entraînement (ou epoch), de réduire le nombre de calculs de dérivées à <i>n_batches</i> (ce qui revient à répéter le calcul 60 000 / <i>n_batches</i> fois durant UNE epoch).</p>
+
+  <p>Voyons un exemple avec la descente de gradient stochastique (SGD). Ce code nous indique comment améliorer les paramètres du modèle en utilisant SGD avec un taux d'apprentissage de 0,001.</p>
+  
+  <pre><code>
+  learningRate = 0.001
+  opt = torch.optim.SGD(model.parameters(), lr=learningRate)
+  </code></pre>
+  
+  <p><strong>Entrainement</strong></p>
+
+  <pre><code>
+  preds = model(x)
+  loss = lossFn(preds, y)
+  #compute gradients
+  loss.backward() 
+  
+  #update parameters
+  opt.step()
+  
+  #reset gradients to 0
+  opt.zero_grad()
+  </code></pre>
+  
+  
+  <p><strong>Validation</strong></p>
+  
+  <pre><code>
+  preds = model(x)
+  loss = lossFn(preds, y)
+  #votre fonction accuracy
+  acc = accuracy(pred, y)
+  print("loss",loss, "accuracy",acc)
+  </code></pre>
+  
+  <hr>
+  <p><strong>À faire -</strong> Super, nous sommes capables de faire un entraînement sur le premier batch du dataset d'entraînement. Cependant, le dataset d'entraînement est bien plus important (au moins 50 000 images). Plutôt que de simplement faire un <i>next(iter())</i> sur notre <i>DataLoader</i>, nous allons boucler pour effectuer l'intégralité d'une epoch.</p>
+
+  <p>1. Écrivez la fonction <i>fit_one_cycle()</i>, qui réalise une itération complète sur tous les batches de votre objet <i>DataLoader</i>, et qui effectue l'entraînement ainsi que la validation.</p>
+
+  <p>2. Testez votre modèle sur une epoch (le résultat sera probablement décevant pour l'instant).</p>
+
+  <p>3. Créez une boucle d'entraînement qui prend en compte le nombre d'epochs, et qui appelle la fonction <i>fit_one_cycle()</i> pour chaque epoch.</p>
+
+  <hr>
+
+  <p>Super ! Nous avons entraîné notre premier réseau de neurones... c'était un travail considérable, et pourtant les résultats sont probablement décevants pour l'instant ! L'objectif de cette démarche est de vous apprendre à manipuler PyTorch et, surtout, à construire des réseaux de neurones efficaces !</p>
+  <p>La suite est ici ! <a href="../cours/pytorch.html">Chapitre 2 : "Deep Dive" - Architecture de réseaux de neurones avancées</a></p>
+  
+</div></body>
+
+</html>
