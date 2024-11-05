@@ -140,7 +140,7 @@
   
     <p>1. Lancez le fully-connected avec <i>batch[0]</i>.</p>
     <p>    Pourquoi cela ne fonctionne-t-il pas ?</p>
-    <p>2. Proposez un code pour résoudre le problème - <U>quelqu'un devra passer au tableau</U> :^)</p>
+    <p>2. Proposez un code pour résoudre le problème - <U>quelqu'un devra passer au tableau</U> :^) (blague à part : on partagera nos réponses.)</p>
 
     <p>En résumé, une multiplication matricielle nécessite que les dimensions adjacentes soient de la même taille !</p>
     
@@ -149,11 +149,13 @@
     <img src="../images/eq1.png" alt="equation 1">
     
     <p>Pour <i>nn.Linear()</i>, la dimension adjacente est la dernière dimension de votre tenseur d'entrée.</p>
-
+	
+	<hr>
+	
     <p><strong>nn.Module</strong> Lorsque nous avons plusieurs objets permettant de créer des perceptrons multicouches ou des couches convolutives, par exemple, il n'est pas pratique de gérer plusieurs variables comme dans le code suivant :</p>
     <pre><code>
-    a = nn.Linear(3, 32) #from 32 to 64
-    b = nn.Linear(32, 24) #from 64 back to 32.
+    a = nn.Linear(3, 32) #from 3 to 32
+    b = nn.Linear(32, 24) #from 32 back to 24.
     
     b(a(torch.randn(1,32*32,3)))
     </code></pre>
@@ -166,8 +168,8 @@
       def __init__(self):
         super().__init__()
         #definitions / constructors
-        self.a = nn.Linear(32,64)
-        self.b = nn.Linear(64,32)
+        self.a = nn.Linear(3,32)
+        self.b = nn.Linear(32,24)
       def forward(self, x):
         return self.b(self.a(x))
     </code></pre>
@@ -176,8 +178,8 @@
   
   <hr>
   <p><strong>À faire :</strong></p>
-  <p>1. Faites en sorte que la dimension de la couche d'entrée ne soit pas fixée à 32.</p>
-  <p>2. Faites de même pour la couche "hidden".</p>
+  <p>1. Faites en sorte que la dimension de la couche de sortie du premier MLP ne soit pas fixée à 32.</p>
+  <p>2. Faites de même pour la couche b.</p>
   <p>3. Ajoutez un troisième <i>nn.Linear</i> pour que l'entrée <i>x</i> renvoie exactement le nombre de classes présentes dans CIFAR<strong>10</strong> (spoiler : il y a 10 classes ! :o )</p>
 
   <hr>  
@@ -207,7 +209,7 @@
   <p>Heureusement, il n'est pas nécessaire de coder cela à la main – bien que j'ai failli vous le demander ! – grâce à PyTorch, nous pouvons utiliser l'opération Softmax pour convertir notre ensemble de chiffres en probabilités.</p>
   <img src="../images/softmax.png" alt=softmax>
   
-  <p>La fonction peut sembler un peu "complexe" au premier abord, mais si nous décomposons le calcul pour la première valeur de notre précédent tenseur [], nous obtenons le calcul suivant :</p>
+  <p>La fonction peut sembler un peu "complexe" au premier abord, mais si nous décomposons le calcul pour la première valeur de notre précédent tenseur [], nous obtenons le calcul ci-dessus (ou ci-dessous, html/css me rend dingue, ça dépend du navigateur)</p>
   <math>exp(Tensor[0]) / exp(Tensor[0]) + exp(Tensor[1]) + ... + exp(Tensor[9])</math>
   
   <p>Nous répétons l'opération pour chaque valeur.</p>
@@ -260,7 +262,7 @@
   import torch.nn.functional as F
   lossFn = F.cross_entropy
   
-  loss = lossFn(my_prob_outpus, labels)
+  loss = lossFn(my_prob_outputs, labels)
   tensor(2.35, grad_fn=NllLossBackward)
   </code></pre>
   
