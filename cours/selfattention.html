@@ -286,12 +286,12 @@ Dans cette classe, vous devez faire appel à la MultiHeadAttention, puis au Feed
 
 <pre>
     <code>
-class Transformer(nn.Module):
-	def __init__(self, dim, heads, hidden_dim):
-		super().__init__()
-		...TODO...
-	def forward(self, x):
-		...TODO...
+    class Transformer(nn.Module):
+        def __init__(self, dim, heads, hidden_dim):
+            super().__init__()
+            ...TODO...
+        def forward(self, x):
+            ...TODO...
     </code>
 </pre>
 
@@ -301,7 +301,6 @@ class Transformer(nn.Module):
 <p>Vous devez créer ce qu'on appelle un TowerViT, c'est-à-dire que les dimensions sont statiques tout du long (il suffit juste de répéter plusieurs blocs type Transformers).</p>
 <p>Vous devez ensuite créer un vrai ViT, un modèle avec plusieurs dimensions d'entrée et de sortie (que vous devrez gérer).</p>
 
-<p>Le code 
 <p>Votre réseau de neurones s'entraînera sur CIFAR10 comme le TP précédent. Nous vous inquiétez pas si le code est très lent ou prend du temps à s'entraîner pour des résultats médiocres, les transformers fonctionne réellement vers le milliard de paramètres... Dans votre cas, quelques millions de paramètres et un code qui fonctionne suffiront à avoir une bonne note, bon courage ! :)</p>
 
     <p><strong>Fast redirections</strong></p>
