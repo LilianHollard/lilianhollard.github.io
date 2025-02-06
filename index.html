@@ -38,13 +38,55 @@
 
     <p>You may be here for my work on LeYOLO (if not, you can find it <a href="https://github.com/LilianHollard/LeYOLO">here</a>). If you have any questions, feel free to email me at: lilian.hollard@univ-reims.fr</p>
     
+    
+    <!--
+    <p class="section">They trust me</p>
+    <div class="container">
+        <div class="card" onclick="openModal('EdgeAI', 'EdgeAI is a key initiative for the European digital transition towards intelligent processing solutions at the edge. EdgeAI develops new electronic components and systems, processing architectures, connectivity, software, algorithms, and middleware through the combination of microelectronics, AI, embedded systems, and edge computing. It will demonstrate the applicability of the developed edge AI hardware/software/algorithms approaches across various vertical solutions, considering security, trust, and energy efficiency demands inherent in several use cases. The project covers key strategic application areas such as Digital Industry, Energy, Agri-food and Beverage, Mobility, and Digital Society.')">
+            <img src="images/EdgeAI.png" alt="Card Image" width="200 px", height="100 px">
+            <div class="content">
+                <h3>EdgeAI</h3>
+                <p>European Project : https://edge-ai-tech.eu</p>
+            </div>
+        </div>
+        <div class="card" onclick="openModal('Vranken-Pommery', 'Champagne Producer')">
+            <img src="images/vranken.png" alt="Card Image">
+            <div class="content">
+                <h3>Vranken-Pommery</h3>
+                <p></p>
+            </div>
+        </div>
+
+        
+    </div>-->
+    
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-title">Title</h3>
+            <p id="modal-description">Description</p>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+    
+    <script>
+        function openModal(title, description) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-description').innerText = description;
+            document.getElementById('modal').classList.add('active');
+        }
+    
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+    </script>
+
     <p class="section">Other</p>
     <p>Pour mes étudiants en M2 CHPS :) - <a href="cours/cmtp1.html">cliquez ici</a>.</p>
   
     <p><strong>Fast redirections</strong></p>
     <p><a href="cours/pytorch.html">Chapitre 1 : Pytorch - Etude sur CIFAR</a></p>
     <p><a href="cours/deepdive.html">Chapitre 2 : "Deep Dive" - Architecture de réseaux de neurones avancées</a></p>
-    <p><a href="cours/pytorch.html">Chapitre 3 : Transformers - Todo, j'ai pas le temps :)</a> </p>
+    <p><a href="cours/selfattention.html">Chapitre 3 : Transformers</a> </p>
     
 
 
