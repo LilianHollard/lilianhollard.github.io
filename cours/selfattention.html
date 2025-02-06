@@ -247,22 +247,22 @@
         </code>
     </pre>
 	
-	Sanity check: Votre code doit fonctionner avec ces 2 cas d'usage.
-	Le premier, quand on garde la même dimension en entrée et en sortie.
+	<p>Sanity check: Votre code doit fonctionner avec ces 2 cas d'usage.</p>
+	<p>Le premier, quand on garde la même dimension en entrée et en sortie.</p>
 	<pre>
 		<code>
 		net = MultiheadAttention(64, 64, 4)
 		net(torch.randn(1,16*16,64)).shape
 		</code>
 	</pre>
-	Le deuxième, quand on souhaite aller vers une nouvelle dimension.
+	<p>Le deuxième, quand on souhaite aller vers une nouvelle dimension.</p>
 	<pre>
 		<code>
 		net = MultiheadAttention(64, 256, 4)
 		net(torch.randn(1,16*16,64)).shape
 		</code>
 	</pre>
-	Si ça ne fonctionne pas, il y a probablement un problème du côté de la projection (in_proj et o_proj).
+	<p>Si ça ne fonctionne pas, il y a probablement un problème du côté de la projection (in_proj et o_proj).</p>
 
 	<p>Nous avons fait le plus dur ! Maintenant, nous allons coder un réseau de neurones qui utilise efficacement l'attention. Dans ChatGPT, 
 	le bloc utilisé s'appelle après l'attention s'appelle le FeedForward. 
@@ -284,12 +284,16 @@
 	<p>Créez une classe Transformer qui prend en entrée, la dimension de départ (celle calculée après avoir mis votre image sous forme de patch), le nombre de têtes, ainsi que le nombre de dimension caché (pour le feed forward).
 Dans cette classe, vous devez faire appel à la MultiHeadAttention, puis au FeedForward.</p>
 
+<pre>
+    <code>
 class Transformer(nn.Module):
 	def __init__(self, dim, heads, hidden_dim):
 		super().__init__()
 		...TODO...
 	def forward(self, x):
 		...TODO...
+    </code>
+</pre>
 
 <p class="section">A rendre</p>
 
